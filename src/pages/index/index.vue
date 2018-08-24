@@ -8,9 +8,67 @@
           </div>
         </Menu>
       </Header>
-      <Content>
-        <router-view></router-view>
-      </Content>
+      <Layout style="padding: 0px 50px;">
+        <Breadcrumb style="margin: 16px 0px;">
+          <BreadcrumbItem to="/">Home</BreadcrumbItem>
+          <BreadcrumbItem to="/components/breadcrumb">Components</BreadcrumbItem>
+          <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
+        </Breadcrumb>
+        <Content :style="{padding: '24px 0', minHeight: '280px', background: '#fff'}">
+
+          <Layout>
+            <Sider hide-trigger :style="{background: '#fff'}">
+              <Menu ref="menu" width="auto">
+
+                <MenuGroup title="管理平台">
+                  <MenuItem :name="0">
+                  <Icon type="md-home" />首页
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup title="预约管理">
+                  <MenuItem :name="1">
+                  <Icon type="ios-calendar-outline" />预约估价
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup title="装修管理">
+                  <MenuItem :name="2">
+                  <Icon type="md-cube" />房间项
+                  </MenuItem>
+                  <MenuItem :name="3">
+                  <Icon type="ios-construct" />施工项
+                  </MenuItem>
+                  <MenuItem :name="4">
+                  <Icon type="md-outlet" />产品项
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup title="员工管理">
+                  <MenuItem :name="5">
+                  <Icon type="md-people" />公司管理
+                  </MenuItem>
+                </MenuGroup>
+                <MenuGroup title="后台功能">
+                  <MenuItem :name="6">
+                  <Icon type="md-chatboxes" />平台消息
+                  </MenuItem>
+                  <MenuItem :name="7">
+                  <Icon type="ios-paper-plane" />轮播管理
+                  </MenuItem>
+                  <MenuItem :name="8">
+                  <Icon type="ios-document" />公式文档
+                  </MenuItem>
+                  <MenuItem :name="9">
+                  <Icon type="ios-lock" />密码修改
+                  </MenuItem>
+                </MenuGroup>
+              </Menu>
+            </Sider>
+            <Content :style="{padding: '5px 24px 80px', minHeight: '280px', background: '#fff'}">
+              <router-view></router-view>
+            </Content>
+          </Layout>
+        </Content>
+      </Layout>
+
       <Footer>Footer</Footer>
     </Layout>
   </div>
