@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import Layout from 'pages/layout/layout'
 import Index from 'pages/index/index'
 import Login from 'pages/login/login'
 import Appointment from 'pages/appointment/appointment'
@@ -22,13 +23,18 @@ export default new Router({
       redirect: '/app/index',
     },
     {
-      path: '/app/index',
-      name: 'index',
-      meta: {
-        title: '首页'
-      },
-      component: Index,
+      path: '/app/layout',
+      name: 'layout',
+      component: Layout,
       children: [{
+          path: '/app/index',
+          name: 'index',
+          meta: {
+            title: '首页'
+          },
+          component: Index,
+        },
+        {
           path: '/app/appointment',
           name: 'appointment',
           meta: {
@@ -103,10 +109,8 @@ export default new Router({
       ]
     },
     {
-      path: '/app/login',
+      path: '/login',
       component: Login,
     }
-
   ]
 })
-
