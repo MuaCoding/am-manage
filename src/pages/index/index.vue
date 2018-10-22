@@ -1,17 +1,17 @@
 <template>
   <div class="index">
     <div class="index-cover">
-      <img v-bind:src="imgUrl" alt="">
+      <img src="@/assets/index.png" alt="">
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "index",
   data() {
     return {
-      imgUrl: "../../../assets/index.png"
     };
   }
 };
