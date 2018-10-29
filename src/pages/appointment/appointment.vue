@@ -16,7 +16,7 @@
           </Select>
         </div>
         <div>
-          <Select filterable size="large" style="width:200px" v-if="false">
+          <Select filterable size="large" style="width:200px" :v-if="status">
             <!-- <Option></Option> -->
           </Select>
           <Input size="large" placeholder="large size" style="width:200px" />
@@ -27,12 +27,41 @@
     </div>
 
     <div>
-      <Table border :columns="columns1" :data="data1"></Table>
+      <Table stripe border :columns="columnsTitle" :data="appointList"></Table>
     </div>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      status: false,
+      columnsTitle: [
+        {
+          title: "#",
+          key: "id"
+        },
+        {
+          title: "订单号",
+          key: "order_id"
+        },
+        {
+          title: "客户信息",
+          key: "contact"
+        },
+        {
+          title: "房屋属性",
+          key: "house"
+        },
+        {
+          title: "地址",
+          key: "address"
+        },
+      ],
+      appointList: []
+    };
+  }
+};
 </script>
 
 <style lang="scss" rel="stylesheet/scss">

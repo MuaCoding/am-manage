@@ -1,19 +1,18 @@
 <template>
     <div class="root">
         <div>
-
             <div class="login-panel">
                 <h1>管理平台登录</h1>
-                <Form >
-                    <FormItem>
-                        <Input size="large" clearable placeholder="请输入用户名"></Input>
+                <Form ref="loginForm" :model="loginForm" :rules="loginRules">
+                    <FormItem prop="username">
+                        <Input type="text" v-model="loginForm.username" size="large" clearable placeholder="请输入用户名"></Input>
                     </FormItem>
-                    <FormItem>
-                        <Input size="large" clearable placeholder="请输入密码"></Input>
+                    <FormItem prop="password">
+                        <Input type="password" v-model="loginForm.password" size="large" clearable placeholder="请输入密码"></Input>
                     </FormItem>
                     <FormItem class="btn-group">
-                        <Button size="large" icon="md-checkmark" type="primary" @click="handleSubmit('formCustom')">登录</Button>
-                        <Button size="large" icon="md-refresh" @click="handleReset('formCustom')" style="margin-left: 8px">重置</Button>
+                        <Button size="large" icon="md-checkmark" type="primary" @click="handleSubmit('loginForm')">登录</Button>
+                        <Button size="large" icon="md-refresh" @click="handleReset('loginForm')" style="margin-left: 8px">重置</Button>
                     </FormItem>
                 </Form>
             </div>
@@ -24,20 +23,49 @@
 <script>
 export default {
   data() {
+    const validateUsername = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请填写用户名"));
+      } else {
+        callback();
+      }
+    };
+    const validatePassword = (rule, value, callback) => {
+      var pattern = /^\S{3,20}$/g;
+      if (value === "") {
+        callback(new Error("请填写密码"));
+      } else if (!pattern.test(value)) {
+        callback(new Error("请输入3-20个非空白字符"));
+      } else {
+        callback();
+      }
+    };
     return {
       loginForm: {
         username: "",
-        passward: ""
+        password: ""
       },
       loginRules: {
         username: [
           { required: true, trigger: "blur", validator: validateUsername }
         ],
-        passward: [
+        password: [
           { required: true, trigger: "blur", validator: validatePassword }
         ]
       }
     };
+  },
+  methods: {
+    handleSubmit(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.$Message.success("登录成功");
+        }
+      });
+    },
+    handleReset(name) {
+      this.$refs[name].resetFields();
+    }
   }
 };
 </script>

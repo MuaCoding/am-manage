@@ -13,11 +13,15 @@ import Message from 'pages/message/message'
 import Banner from 'pages/banner/banner'
 import Formula from 'pages/formula/formula'
 import Password from 'pages/password/password'
+import VueRouter from 'vue-router';
+import store from '../store';
 
 
 Vue.use(Router)
 
+
 export default new Router({
+  mode: 'history',
   routes: [{
       path: '/',
       redirect: '/app/index',
@@ -26,11 +30,14 @@ export default new Router({
       path: '/app/layout',
       name: 'layout',
       component: Layout,
+      meta: {
+        requireAuth: true // 表示进入这个路由是需要登录的
+      },
       children: [{
           path: '/app/index',
           name: 'index',
           meta: {
-            title: '首页'
+            title: '首页',
           },
           component: Index,
         },
@@ -110,6 +117,10 @@ export default new Router({
     },
     {
       path: '/login',
+      name: "userLogin",
+      meta: {
+        title: "用户登录"
+      },
       component: Login,
     }
   ]
