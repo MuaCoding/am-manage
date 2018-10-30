@@ -74,10 +74,9 @@ export default {
             fingerprint: md5(new Fingerprint().get())
           };
           loginAction(formdata).then(res => {
-            console.log(res)
-            res.code === ERR_OK
-              ? console.log(res)
-              : ''
+            if(res.code === ERR_OK){
+              
+            }
           }).catch(error => {
             this.$Message.info("账号或密码错误")
           });
