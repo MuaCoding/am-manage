@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
+
 import Layout from 'pages/layout/layout'
 import Index from 'pages/index/index'
 import Login from 'pages/login/login'
@@ -13,14 +16,10 @@ import Message from 'pages/message/message'
 import Banner from 'pages/banner/banner'
 import Formula from 'pages/formula/formula'
 import Password from 'pages/password/password'
-import VueRouter from 'vue-router';
-import store from '../store';
-
 
 Vue.use(Router)
 
-
-export default new Router({
+const router =  new Router({
   mode: 'history',
   routes: [{
       path: '/',
@@ -125,3 +124,17 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  iView.LoadingBar.start();
+  if (to.path !== '/login' && !sessionStorage.token) { // 判断该路由是否需要登录权限
+    return next('/login')
+  }
+  next();
+});
+
+router.afterEach(route => {
+  iView.LoadingBar.finish();
+})
+
+export default router;

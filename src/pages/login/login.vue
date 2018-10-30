@@ -21,6 +21,14 @@
 </template>
 
 <script>
+import * as types from "../../store/mutation-types";
+import { loginAction } from "../../server/commonServices";
+import { ERR_OK } from "../../server/configServices";
+import Fingerprint from "fingerprintjs";
+import md5 from "md5";
+
+// import axios from '../../provider/intercept'
+
 export default {
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -55,11 +63,24 @@ export default {
       }
     };
   },
+  mounted() {},
   methods: {
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.$Message.success("登录成功");
+          var formdata = {
+            account: this.loginForm.username,
+            password: md5(this.loginForm.password),
+            fingerprint: md5(new Fingerprint().get())
+          };
+          loginAction(formdata).then(res => {
+            console.log(res)
+            res.code === ERR_OK
+              ? console.log(res)
+              : ''
+          }).catch(error => {
+            this.$Message.info("账号或密码错误")
+          });
         }
       });
     },
