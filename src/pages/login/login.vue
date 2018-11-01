@@ -1,29 +1,30 @@
 <template>
-    <div class="root">
-        <div>
-            <div class="login-panel">
-                <h1>管理平台登录</h1>
-                <Form ref="loginForm" :model="loginForm" :rules="loginRules">
-                    <FormItem prop="username">
-                        <Input type="text" v-model="loginForm.username" size="large" clearable placeholder="请输入用户名"></Input>
-                    </FormItem>
-                    <FormItem prop="password">
-                        <Input type="password" v-model="loginForm.password" size="large" clearable placeholder="请输入密码"></Input>
-                    </FormItem>
-                    <FormItem class="btn-group">
-                        <Button size="large" icon="md-checkmark" type="primary" @click="handleSubmit('loginForm')">登录</Button>
-                        <Button size="large" icon="md-refresh" @click="handleReset('loginForm')" style="margin-left: 8px">重置</Button>
-                    </FormItem>
-                </Form>
-            </div>
-        </div>
+  <div class="root">
+    <div>
+      <div class="login-panel">
+        <h1>管理平台登录</h1>
+        <Form ref="loginForm" :model="loginForm" :rules="loginRules">
+          <FormItem prop="username">
+            <Input type="text" v-model="loginForm.username" size="large" clearable placeholder="请输入用户名"></Input>
+          </FormItem>
+          <FormItem prop="password">
+            <Input type="password" v-model="loginForm.password" size="large" clearable placeholder="请输入密码"></Input>
+          </FormItem>
+          <FormItem class="btn-group">
+            <Button size="large" icon="md-checkmark" type="primary" @click="handleSubmit('loginForm')">登录</Button>
+            <Button size="large" icon="md-refresh" @click="handleReset('loginForm')" style="margin-left: 8px">重置</Button>
+          </FormItem>
+        </Form>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 import * as types from "../../store/mutation-types";
 import { loginAction } from "../../server/commonServices";
 import { ERR_OK } from "../../server/configServices";
+import { setStore, getStore, removeStore } from "../../common/js/cache.js";
 import Fingerprint from "fingerprintjs";
 import md5 from "md5";
 
@@ -73,13 +74,22 @@ export default {
             password: md5(this.loginForm.password),
             fingerprint: md5(new Fingerprint().get())
           };
-          loginAction(formdata).then(res => {
-            if(res.code === ERR_OK){
-              
-            }
-          }).catch(error => {
-            this.$Message.info("账号或密码错误")
-          });
+          loginAction(formdata)
+            .then(res => {
+              if (res.code === ERR_OK) {
+                this.$Message.info(res.msg);
+                setStore("USER_TOKEN", res.data.token);
+                this.router.push({
+                  name: "login"
+                });
+              }
+            })
+            .catch(error => {
+              this.$Modal.error({
+                title: "错误提示",
+                content: "账号或密码错误"
+              });
+            });
         }
       });
     },

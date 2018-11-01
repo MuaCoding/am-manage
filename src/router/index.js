@@ -127,6 +127,10 @@ const router =  new Router({
 
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start();
+  /**
+   * 1.判断该路由是否需要登录权限
+   * 2.判断登录信息是否过期
+   */
   if (to.path !== '/login' && !sessionStorage.token) { // 判断该路由是否需要登录权限
     return next('/login')
   }
