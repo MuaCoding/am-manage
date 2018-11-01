@@ -24,6 +24,7 @@
 import * as types from "../../store/mutation-types";
 import { loginAction } from "../../server/commonServices";
 import { ERR_OK } from "../../server/configServices";
+import { setStore, getStore, removeStore } from '../../common/js/cache.js'
 import Fingerprint from "fingerprintjs";
 import md5 from "md5";
 
@@ -73,14 +74,19 @@ export default {
             password: md5(this.loginForm.password),
             fingerprint: md5(new Fingerprint().get())
           };
-          loginAction(formdata).then(res => {
-            console.log(res)
-            res.code === ERR_OK
-              ? console.log(res)
-              : ''
-          }).catch(error => {
-            this.$Message.info("账号或密码错误")
-          });
+          loginAction(formdata)
+            .then(res => {
+              if (res.code === ERR_OK) {
+                this.$Message.info(res.msg);
+                // that.$router.replace("/app/index");
+              }
+            })
+            .catch(error => {
+              this.$Modal.error({
+                title: "错误提示",
+                content: "账号或密码错误"
+              });
+            });
         }
       });
     },
