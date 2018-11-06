@@ -33,6 +33,7 @@
 </template>
 <script>
 export default {
+  name: "appointment",
   data() {
     return {
       status: false,

@@ -3,8 +3,34 @@ import axios from 'axios'
 axios.defaults.timeout = 10000
 axios.defaults.headers.post['Content-Type'] = 'application/x-www=form-urlencoded'
 
+
+// 请求拦截
+// axios.interceptors.request.use(config => {
+
+//   // post传参序列化
+//   if (config.method === "post") {
+//     config.data = qs.stringify(config.data);
+//   }
+
+//   return config
+// }, error => {
+//   return Promise.reject(error)
+// })
+
+// // 返回状态判断(添加响应拦截器)
+// axios.interceptors.response.use(
+//   res => {
+//     if (res.data.code !== 0) {
+//       console.log('错误提示你')
+//     } 
+//   },
+//   err => {
+//     return Promise.reject(err)
+//   }
+// )
+
 export default {
-  fetchGet(url, params = {}) {
+  get(url, params = {}) {
     return new Promise((resolve, reject) => {
       axios.get(url, params).then(res => {
         resolve(res.data)
@@ -13,7 +39,7 @@ export default {
       })
     })
   },
-  fetchPost(url, params = {}) {
+  post(url, params = {}) {
     return new Promise((resolve, reject) => {
       axios.post(url, params).then(res => {
         resolve(res.data)

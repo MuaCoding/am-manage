@@ -16,103 +16,15 @@ import Message from 'pages/message/message'
 import Banner from 'pages/banner/banner'
 import Formula from 'pages/formula/formula'
 import Password from 'pages/password/password'
+import store from '../store';
 
 Vue.use(Router)
 
-const router =  new Router({
+const router = new Router({
   mode: 'history',
   routes: [{
       path: '/',
       redirect: '/app/index',
-    },
-    {
-      path: '/app/layout',
-      name: 'layout',
-      component: Layout,
-      meta: {
-        requireAuth: true // 表示进入这个路由是需要登录的
-      },
-      children: [{
-          path: '/app/index',
-          name: 'index',
-          meta: {
-            title: '首页',
-          },
-          component: Index,
-        },
-        {
-          path: '/app/appointment',
-          name: 'appointment',
-          meta: {
-            title: '预约管理'
-          },
-          component: Appointment,
-        },
-        {
-          path: '/app/room',
-          name: 'room',
-          meta: {
-            title: '房间项管理'
-          },
-          component: Room,
-        },
-        {
-          path: '/app/construct',
-          name: 'construct',
-          meta: {
-            title: '施工项管理'
-          },
-          component: Construct,
-        },
-        {
-          path: '/app/product',
-          name: 'product',
-          meta: {
-            title: '产品项管理'
-          },
-          component: Product,
-        },
-        {
-          path: '/app/company',
-          name: 'company',
-          meta: {
-            title: '公司管理'
-          },
-          component: Company,
-        },
-        {
-          path: '/app/message',
-          name: 'message',
-          meta: {
-            title: '平台消息'
-          },
-          component: Message,
-        },
-        {
-          path: '/app/banner',
-          name: 'banner',
-          meta: {
-            title: '轮播管理'
-          },
-          component: Banner,
-        },
-        {
-          path: '/app/formula',
-          name: 'formula',
-          meta: {
-            title: '公式文档'
-          },
-          component: Formula,
-        },
-        {
-          path: '/app/password',
-          name: 'password',
-          meta: {
-            title: '密码修改'
-          },
-          component: Password,
-        }
-      ]
     },
     {
       path: '/login',
@@ -121,6 +33,95 @@ const router =  new Router({
         title: "用户登录"
       },
       component: Login,
+    },
+    {
+      path: '/app',
+      name: 'app',
+      component: Layout,
+      meta: {
+        requireAuth: true // 表示进入这个路由是需要登录的
+      },
+      children: [{
+          path: 'index',
+          name: 'index',
+          meta: {
+            title: '首页',
+          },
+          component: Index,
+        },
+        {
+          path: 'appointment',
+          name: 'appointment',
+          meta: {
+            title: '预约管理'
+          },
+          component: Appointment,
+        },
+        {
+          path: 'room',
+          name: 'room',
+          meta: {
+            title: '房间项管理'
+          },
+          component: Room,
+        },
+        {
+          path: 'construct',
+          name: 'construct',
+          meta: {
+            title: '施工项管理'
+          },
+          component: Construct,
+        },
+        {
+          path: 'product',
+          name: 'product',
+          meta: {
+            title: '产品项管理'
+          },
+          component: Product,
+        },
+        {
+          path: 'company',
+          name: 'company',
+          meta: {
+            title: '公司管理'
+          },
+          component: Company,
+        },
+        {
+          path: 'message',
+          name: 'message',
+          meta: {
+            title: '平台消息'
+          },
+          component: Message,
+        },
+        {
+          path: 'banner',
+          name: 'banner',
+          meta: {
+            title: '轮播管理'
+          },
+          component: Banner,
+        },
+        {
+          path: 'formula',
+          name: 'formula',
+          meta: {
+            title: '公式文档'
+          },
+          component: Formula,
+        },
+        {
+          path: 'password',
+          name: 'password',
+          meta: {
+            title: '密码修改'
+          },
+          component: Password,
+        }
+      ]
     }
   ]
 })
@@ -131,14 +132,15 @@ router.beforeEach((to, from, next) => {
    * 1.判断该路由是否需要登录权限
    * 2.判断登录信息是否过期
    */
-  if (to.path !== '/login' && !sessionStorage.token) { // 判断该路由是否需要登录权限
-    return next('/login')
+  if (to.path !== '/login') { // 判断该路由是否需要登录权限
+    // return next('/login')
   }
   next();
 });
 
 router.afterEach(route => {
   iView.LoadingBar.finish();
+  window.scrollTo(0, 0);
 })
 
 export default router;

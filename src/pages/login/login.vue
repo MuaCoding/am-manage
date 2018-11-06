@@ -31,6 +31,7 @@ import md5 from "md5";
 // import axios from '../../provider/intercept'
 
 export default {
+  name: "login",
   data() {
     const validateUsername = (rule, value, callback) => {
       if (value === "") {
@@ -64,7 +65,9 @@ export default {
       }
     };
   },
-  mounted() {},
+  mounted() {
+    // this.$store.commit(types.TITLE, "Login");
+  },
   methods: {
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
@@ -78,13 +81,14 @@ export default {
             .then(res => {
               if (res.code === ERR_OK) {
                 this.$Message.info(res.msg);
-                setStore("USER_TOKEN", res.data.token);
-                this.router.push({
-                  name: "login"
+                this.$store.commit(types.LOGIN, res.data.token);
+                this.$router.push({
+                  path: "/app/index"
                 });
               }
             })
             .catch(error => {
+              console.log(error);
               this.$Modal.error({
                 title: "错误提示",
                 content: "账号或密码错误"

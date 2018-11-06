@@ -5,18 +5,19 @@ import * as types from './mutation-types'
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
-    user: {},
-    token: null,
+    user: {
+      token: null,
+    },
     title: ''
   },
-  motations: {
+  mutations: {
     [types.LOGIN]: (state, data) => {
       localStorage.token = data;
-      state.token = data;
+      state.user.token = data;
     },
     [types.LOGOUT]: (state) => {
-      localStorage.removeItem('tolen');
-      state.token = null;
+      localStorage.removeItem('USER_TOKEN');
+      state.user.token = null;
     },
     [types.TITLE]: (state, data) => {
       state.title = data;
