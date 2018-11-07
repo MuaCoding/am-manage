@@ -7,16 +7,21 @@ export default new Vuex.Store({
   state: {
     token: sessionStorage.getItem("USER_TOKEN"),
     spinner: '',
-    title: ''
+    exp: sessionStorage.getItem("TOKEN_EXP")
   },
   mutations: {
     [types.LOGIN]: (state, data) => {
       sessionStorage.setItem("USER_TOKEN", data)
       state.token = data;
     },
+    [types.EXP]: (state, data) => {
+      sessionStorage.setItem("TOKEN_EXP", data)
+      state.exp = data;
+    },
     [types.LOGOUT]: (state) => {
       sessionStorage.removeItem('USER_TOKEN');
+      sessionStorage.removeItem('TOKEN_EXP');
       state.token = null;
     }
-  }
+  },
 })

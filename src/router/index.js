@@ -3,6 +3,9 @@ import Router from 'vue-router'
 
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
+import {
+  Base64
+} from 'js-base64';
 
 import Layout from 'pages/layout/layout'
 import Index from 'pages/index/index'
@@ -53,7 +56,7 @@ const router = new Router({
           path: 'appointment',
           name: 'appointment',
           meta: {
-            title: '预约管理'
+            title: '预约估价列表'
           },
           component: Appointment,
         },
@@ -61,7 +64,7 @@ const router = new Router({
           path: 'room',
           name: 'room',
           meta: {
-            title: '房间项管理'
+            title: '房间项列表'
           },
           component: Room,
         },
@@ -69,7 +72,7 @@ const router = new Router({
           path: 'construct',
           name: 'construct',
           meta: {
-            title: '施工项管理'
+            title: '施工项列表'
           },
           component: Construct,
         },
@@ -77,7 +80,7 @@ const router = new Router({
           path: 'product',
           name: 'product',
           meta: {
-            title: '产品项管理'
+            title: '产品项列表'
           },
           component: Product,
         },
@@ -93,7 +96,7 @@ const router = new Router({
           path: 'message',
           name: 'message',
           meta: {
-            title: '平台消息'
+            title: '消息管理'
           },
           component: Message,
         },
@@ -132,23 +135,29 @@ router.beforeEach((to, from, next) => {
    * 1.判断该路由是否需要登录权限
    * 2.判断登录信息是否过期
    */
-  document.title = to.meta.title + '-后台管理平台';
+  document.title = to.meta.title + ' - 后台管理平台';
   var flag;
-  var a = store.state.user.token;
-  console.log(store)
-  // try {
-  //   var a = store.state.user.token.split(".")[1],
-  //     s = e(142).Base64,
-  //     h = new Date(1e3 * JSON.parse(s.decode(a)).exp);
-     
-  //   flag = h > new Date
-  // } catch (t) {
-  //   flag = !1
-  // }
+  try {
+    var a = store.state.token.split(".")[1],
+      h = new Date(1e3 * JSON.parse(Base64.decode(a)).exp);
+    flag = h > new Date
+  } catch (t) {
+    flag = !1
+  }
 
 
-  if (to.path !== '/login') { // 判断该路由是否需要登录权限
-    // return next('/login')
+  if (!flag && to.path !== '/login' && "/logout" !== to.path) { // 判断该路由是否需要登录权限
+    iView.LoadingBar.finish();
+    this.$Modal.error({
+      title: "错误信息",
+      content: "您的用户状态已失效，请前往登录页面重新登录",
+      onOk: function () {
+        this.$router.push({
+          path: "/login"
+        });
+      }
+    });
+    // -1 === to.path.indexOf(i) && -1 === to.path.indexOf(from.path) && this.$store.commit("CLEAR_LIST_STATUS");
   }
   next();
 });

@@ -80,6 +80,7 @@ export default {
               if (res.code === ERR_OK) {
                 this.$Message.info(res.msg);
                 this.$store.commit(types.LOGIN, res.data.token);
+                this.$store.commit(types.EXP, res.data.exp);
                 this.$router.push({
                   path: "/app/index"
                 });

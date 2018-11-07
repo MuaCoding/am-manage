@@ -9,9 +9,9 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www=form-urlencoded
 // 请求拦截
 axios.interceptors.request.use(config => {
 
-  if (store.state.user.token) {
+  if (store.state.token) {
     config.headers = {
-      "User-Token": store.state.user.token
+      "User-Token": store.state.token
     }
   }
   return config
