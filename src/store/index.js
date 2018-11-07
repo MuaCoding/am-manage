@@ -5,22 +5,18 @@ import * as types from './mutation-types'
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
-    user: {
-      token: null,
-    },
+    token: sessionStorage.getItem("USER_TOKEN"),
+    spinner: '',
     title: ''
   },
   mutations: {
     [types.LOGIN]: (state, data) => {
-      localStorage.token = data;
-      state.user.token = data;
+      sessionStorage.setItem("USER_TOKEN", data)
+      state.token = data;
     },
     [types.LOGOUT]: (state) => {
-      localStorage.removeItem('USER_TOKEN');
-      state.user.token = null;
-    },
-    [types.TITLE]: (state, data) => {
-      state.title = data;
+      sessionStorage.removeItem('USER_TOKEN');
+      state.token = null;
     }
   }
 })

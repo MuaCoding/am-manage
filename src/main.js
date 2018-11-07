@@ -17,6 +17,7 @@ Vue.use(iView, {
 });
 
 Vue.config.productionTip = false;
+// Vue.prototype.$http = axios;
 
 /* eslint-disable no-new */
 new Vue({

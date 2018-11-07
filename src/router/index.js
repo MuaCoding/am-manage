@@ -16,7 +16,7 @@ import Message from 'pages/message/message'
 import Banner from 'pages/banner/banner'
 import Formula from 'pages/formula/formula'
 import Password from 'pages/password/password'
-import store from '../store';
+import store from '@/store';
 
 Vue.use(Router)
 
@@ -132,6 +132,21 @@ router.beforeEach((to, from, next) => {
    * 1.判断该路由是否需要登录权限
    * 2.判断登录信息是否过期
    */
+  document.title = to.meta.title + '-后台管理平台';
+  var flag;
+  var a = store.state.user.token;
+  console.log(store)
+  // try {
+  //   var a = store.state.user.token.split(".")[1],
+  //     s = e(142).Base64,
+  //     h = new Date(1e3 * JSON.parse(s.decode(a)).exp);
+     
+  //   flag = h > new Date
+  // } catch (t) {
+  //   flag = !1
+  // }
+
+
   if (to.path !== '/login') { // 判断该路由是否需要登录权限
     // return next('/login')
   }

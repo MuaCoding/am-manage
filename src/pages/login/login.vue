@@ -5,10 +5,10 @@
         <h1>管理平台登录</h1>
         <Form ref="loginForm" :model="loginForm" :rules="loginRules">
           <FormItem prop="username">
-            <Input type="text" v-model="loginForm.username" size="large" clearable placeholder="请输入用户名"></Input>
+            <Input type="text" v-model="loginForm.username" size="large" clearable placeholder="请输入用户名" autocomplete="on"></Input>
           </FormItem>
           <FormItem prop="password">
-            <Input type="password" v-model="loginForm.password" size="large" clearable placeholder="请输入密码"></Input>
+            <Input type="password" v-model="loginForm.password" size="large" clearable placeholder="请输入密码" autocomplete="on"></Input>
           </FormItem>
           <FormItem class="btn-group">
             <Button size="large" icon="md-checkmark" type="primary" @click="handleSubmit('loginForm')">登录</Button>
@@ -27,8 +27,6 @@ import { ERR_OK } from "../../server/configServices";
 import { setStore, getStore, removeStore } from "../../common/js/cache.js";
 import Fingerprint from "fingerprintjs";
 import md5 from "md5";
-
-// import axios from '../../provider/intercept'
 
 export default {
   name: "login",
@@ -88,7 +86,6 @@ export default {
               }
             })
             .catch(error => {
-              console.log(error);
               this.$Modal.error({
                 title: "错误提示",
                 content: "账号或密码错误"
