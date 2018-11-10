@@ -65,18 +65,8 @@ export default {
 };
 </script>
 
-<style lang="scss" rel="stylesheet/scss">
-@import "~common/scss/common.scss";
-
-.ivu-layout-content {
-  h1 {
-    &.page-title {
-      line-height: 40px;
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
-  }
-}
+<style scoped lang="scss" rel="stylesheet/scss">
+@import '~common/scss/common.scss';
 
 .appointment-list {
   > .action-bar {

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import iView from 'iview';
-import 'iview/dist/styles/iview.css';
 import {
   Base64
 } from 'js-base64';
@@ -19,6 +18,7 @@ import Message from 'pages/message/message'
 import Banner from 'pages/banner/banner'
 import Formula from 'pages/formula/formula'
 import Password from 'pages/password/password'
+import Avatar from 'pages/avatar/avatar'
 import store from '@/store';
 
 Vue.use(Router)
@@ -123,7 +123,15 @@ const router = new Router({
             title: '密码修改'
           },
           component: Password,
-        }
+        },
+        {
+          path: 'avatar',
+          name: "avatar",
+          meta: {
+            title: "修改头像"
+          },
+          component: Avatar,
+        },
       ]
     }
   ]
@@ -145,14 +153,13 @@ router.beforeEach((to, from, next) => {
     flag = !1
   }
 
-
   if (!flag && to.path !== '/login' && "/logout" !== to.path) { // 判断该路由是否需要登录权限
     iView.LoadingBar.finish();
-    this.$Modal.error({
+    iView.Modal.error({
       title: "错误信息",
       content: "您的用户状态已失效，请前往登录页面重新登录",
       onOk: function () {
-        this.$router.push({
+        router.push({
           path: "/login"
         });
       }
