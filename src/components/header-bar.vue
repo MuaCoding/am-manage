@@ -5,30 +5,40 @@
         </div>
         <div class="user-info">
             <div class="user-avatar" @click="linkAction">
-                <img ref="avatar" src="null" alt="">
+                <img ref="avatar" :src="userinfo.avatar" alt="">
             </div>
-            <span title="管理员" class="user-name">管理员</span>
+            <span :title="'用户类型：'+userinfo.identity_name" class="user-name">{{userinfo.account | upper}}</span>
             <a class="exit-link">退出</a>
         </div>
     </Header>
 </template>
 
 <script>
+import { queryUserInfo } from "../server/commonServices";
+import { ERR_OK } from "../server/configServices";
 
 export default {
-    props: {
-
-    },
+    props: [
+        'userinfo'
+    ],
     data(){
         return{
-            avatar: null
+        }
+    },
+    filters: {
+        upper: function (value) {
+            if (!value) return '';
+            value = value.toString();
+            return value.toUpperCase();
         }
     },
     methods: {
         linkAction() {
-            this.$router.push({path: "/app/avatar"});
-        }
-    }
+            console.log(this.userinfo)
+            this.$router.push({path: "/app/avatar",params: {userinfo: this.userinfo}});
+        },
+    },
+
 }
 </script>
 

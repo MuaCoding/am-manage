@@ -1,19 +1,23 @@
 <template>
-  <div class="index">
-    <div class="index-cover">
-      <img src="@/assets/index.png" alt="">
-      <h3>欢迎来到XXX管理平台</h3>
-      <p>请使用左侧菜单进行操作</p>
+    <div class="index">
+        <div class="index-cover">
+            <img src="@/assets/index.png" alt="">
+            <h3>欢迎来到XXX管理平台</h3>
+            <p>请使用左侧菜单进行操作</p>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
+
 export default {
-  name: "index",
-  data() {
-    return {};
-  }
+    name: "index",
+
+    data(){
+        return{
+            
+        }
+    }
 };
 </script>
 

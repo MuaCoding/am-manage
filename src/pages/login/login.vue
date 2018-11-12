@@ -1,23 +1,23 @@
 <template>
-  <div class="root">
-    <div>
-      <div class="login-panel">
-        <h1>管理平台登录</h1>
-        <Form ref="loginForm" :model="loginForm" :rules="loginRules">
-          <FormItem prop="username">
-            <Input type="text" v-model="loginForm.username" size="large" clearable placeholder="请输入用户名" autocomplete="on"></Input>
-          </FormItem>
-          <FormItem prop="password">
-            <Input type="password" v-model="loginForm.password" size="large" clearable placeholder="请输入密码" autocomplete="on" v-on:keyup.enter="handleSubmit('loginForm')"></Input>
-          </FormItem>
-          <FormItem class="btn-group">
-            <Button size="large" icon="md-checkmark" type="primary" @click="handleSubmit('loginForm')">登录</Button>
-            <Button size="large" icon="md-refresh" @click="handleReset('loginForm')" style="margin-left: 8px">重置</Button>
-          </FormItem>
-        </Form>
-      </div>
+    <div class="root">
+        <div>
+            <div class="login-panel">
+                <h1>管理平台登录</h1>
+                <Form ref="loginForm" :model="loginForm" :rules="loginRules">
+                    <FormItem prop="username">
+                        <Input type="text" v-model="loginForm.username" size="large" clearable placeholder="请输入用户名" autocomplete="on"></Input>
+                    </FormItem>
+                    <FormItem prop="password">
+                        <Input type="password" v-model="loginForm.password" size="large" clearable placeholder="请输入密码" autocomplete="on" v-on:keyup.enter="handleSubmit('loginForm')"></Input>
+                    </FormItem>
+                    <FormItem class="btn-group">
+                        <Button size="large" icon="md-checkmark" type="primary" @click="handleSubmit('loginForm')">登录</Button>
+                        <Button size="large" icon="md-refresh" @click="handleReset('loginForm')" style="margin-left: 8px">重置</Button>
+                    </FormItem>
+                </Form>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
