@@ -34,8 +34,7 @@ export default {
     },
     methods: {
         linkAction() {
-            console.log(this.userinfo)
-            this.$router.push({path: "/app/avatar",params: {userinfo: this.userinfo}});
+            this.$router.push({name: "avatar",params: {userinfo: this.userinfo}});
         },
     },
 

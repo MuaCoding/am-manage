@@ -5,7 +5,7 @@ import iView from 'iview';
 axios.defaults.timeout = 10000
 axios.defaults.headers.post['Content-Type'] = 'application/x-www=form-urlencoded'
 
-
+var n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}
 // 请求拦截
 axios.interceptors.request.use(config => {
 
@@ -31,7 +31,7 @@ axios.interceptors.response.use(
     return response
   },
   error => {
-    if (error && error.response) {
+    if (error.isEject = !1, error && error.response) {
       switch (error.response.status) {
         case 400:
           error.message = '错误请求'
@@ -73,9 +73,19 @@ axios.interceptors.response.use(
           // error.message = `连接错误${error.response.status}`
           null !== error.response.data.code && 0 !== error.response.data.code ? error.message = error.response.data.msg : error.message = error.response.data.Message
       }
-    } else {
-      error.message = "连接到服务器失败"
     }
+    window.setTimeout(function () {
+      error.isEject || iView.Modal.error({
+        title: "错误提示",
+        content: error.message,
+        onOk: function () {
+          console.log(this)
+          error.response.status && 401 === error.response.status && this.$router.push({
+            name: "login"
+          })
+        }
+      })
+    }, 20)
     return Promise.reject(error)
   }
 )

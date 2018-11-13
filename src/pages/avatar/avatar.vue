@@ -21,9 +21,8 @@ export default {
         }
     },
     mounted(){
-        
-    //   this.userinfo = this.$route.params.userinfo;
-      console.log(this.$route)
+      this.userinfo = this.$route.params.userinfo;
+      console.log(this.userinfo)
     },
 }
 </script>
