@@ -1,11 +1,11 @@
 import axios from 'axios'
 import store from '@/store'
 import iView from 'iview';
+import router from "../router";
 
 axios.defaults.timeout = 10000
 axios.defaults.headers.post['Content-Type'] = 'application/x-www=form-urlencoded'
 
-var n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}
 // 请求拦截
 axios.interceptors.request.use(config => {
 
@@ -79,8 +79,7 @@ axios.interceptors.response.use(
         title: "错误提示",
         content: error.message,
         onOk: function () {
-          console.log(this)
-          error.response.status && 401 === error.response.status && this.$router.push({
+          error.response.status && 401 === error.response.status && router.push({
             name: "login"
           })
         }

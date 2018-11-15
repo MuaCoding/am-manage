@@ -9,3 +9,13 @@ export function loginAction(params) {
 export function queryUserInfo() {
   return httpService.get('/api/manage/account')
 }
+
+// 获取预约估价
+export function queryAppointList(params) {
+  return httpService.get('/api/manage/valuation', params)
+}
+
+// 获取预约估价详情
+export function queryAppointDetail(params) {
+  return httpService.get(`/api/manage/valuation/${params}/detail`)
+}

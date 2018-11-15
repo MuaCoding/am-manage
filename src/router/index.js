@@ -26,12 +26,12 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   routes: [{
-      path: '/',
-      redirect: '/app/index',
-    },
+    path: '/',
+    redirect: '/app/index',
+  },
     {
       path: '/login',
-      name: "userLogin",
+      name: "login",
       meta: {
         title: "用户登录"
       },
@@ -45,13 +45,13 @@ const router = new Router({
         requireAuth: true // 表示进入这个路由是需要登录的
       },
       children: [{
-          path: 'index',
-          name: 'index',
-          meta: {
-            title: '首页',
-          },
-          component: Index,
+        path: 'index',
+        name: 'index',
+        meta: {
+          title: '首页',
         },
+        component: Index,
+      },
         {
           path: 'appointment',
           name: 'appointment',
