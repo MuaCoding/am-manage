@@ -10,7 +10,7 @@
           </FormItem>
           <FormItem prop="password">
             <Input type="password" v-model="loginForm.password" size="large" clearable placeholder="请输入密码"
-                   autocomplete="on" v-on:keyup.enter="handleSubmit('loginForm')"></Input>
+                   autocomplete="on" @keyup.enter.native="handleSubmit('loginForm')"></Input>
           </FormItem>
           <FormItem class="btn-group">
             <Button size="large" icon="md-checkmark" type="primary" @click="handleSubmit('loginForm')">登录</Button>

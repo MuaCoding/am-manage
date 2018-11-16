@@ -29,11 +29,39 @@
 
     <div>
       <Table stripe border :columns="columnsList" :data="appointList" align="center"></Table>
+
+      <Modal
+        v-model="modalVisible"
+        title="预约单详情"
+        @on-ok="okAction"
+        @on-cancel="cancelAction" class="appointment-detail">
+        <h2>订单信息</h2>
+        <ul class="field-list">
+          <li class="list-item">
+            <span class="filed-name">订单编号：</span>
+            <span class="filed-content">{{appointDetail.order_id}}</span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">提交时间：</span>
+            <span class="filed-content">{{appointDetail.order_id}}</span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">预约时间：</span>
+            <span class="filed-content">{{appointDetail.order_id}}</span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">当前状态：</span>
+            <span class="filed-content">{{appointDetail.order_id}}</span>
+          </li>
+        </ul>
+      </Modal>
     </div>
   </div>
+
 </template>
 <script>
   import {queryAppointList, queryAppointDetail} from "../../server/commonServices";
+  import appointDetail from "components/model/appoint-detail.vue";
   import {ERR_OK} from "../../server/configServices";
   import formatDate from "common/js/common";
 
@@ -195,7 +223,8 @@
           },
         ],
         appointList: [],
-        appointDetail: {}
+        appointDetail: {},
+        modalVisible: false,
       };
     },
     filters: {},
@@ -206,7 +235,6 @@
       queryAppointList() {
         queryAppointList().then((res) => {
           if (res.code == ERR_OK) {
-            console.log(res)
             this.appointList = res.data.data;
           }
         })
@@ -214,14 +242,19 @@
       detailAction(item) {
         queryAppointDetail(item.row.id).then((res) => {
           if (res.code == ERR_OK) {
-            console.log(res)
             this.appointDetail = res.data;
+            this.modalVisible = true;
           }
         })
       },
       deleteAction(item) {
         console.log(item)
-      }
+      },
+      okAction(){},
+      cancelAction(){},
+    },
+    components: {
+      appointDetail,
     },
   };
 </script>
@@ -252,5 +285,32 @@
       }
     }
   }
+
+  .appointment-detail {
+    h2 {
+      font-size: 16px;
+      padding: 15px 0 5px;
+      border-top: 1px solid #eee;
+
+      &:first-child {
+        border: 0
+      }
+    }
+    .field-list {
+      list-style: none;
+      padding-bottom: 15px;
+
+      > .list-item {
+        font-size: 13px;
+        line-height: 25px;
+        > .filed-name {
+          display: inline-block;
+          width: 80px;
+          color: #888;
+        }
+      }
+    }
+  }
+
 </style>
 
