@@ -34,7 +34,8 @@
         v-model="modalVisible"
         title="预约单详情"
         @on-ok="okAction"
-        @on-cancel="cancelAction" class="appointment-detail">
+        @on-cancel="cancelAction" class="appointment-detail" v-if="appointDetail">
+        <!---->
         <h2>订单信息</h2>
         <ul class="field-list">
           <li class="list-item">
@@ -43,16 +44,68 @@
           </li>
           <li class="list-item">
             <span class="filed-name">提交时间：</span>
-            <span class="filed-content">{{appointDetail.order_id}}</span>
+            <span class="filed-content">{{appointDetail.created_at | formatDate}}</span>
           </li>
           <li class="list-item">
             <span class="filed-name">预约时间：</span>
-            <span class="filed-content">{{appointDetail.order_id}}</span>
+            <span class="filed-content">{{appointDetail.time  | formatDate}}</span>
           </li>
           <li class="list-item">
             <span class="filed-name">当前状态：</span>
-            <span class="filed-content">{{appointDetail.order_id}}</span>
+            <span class="filed-content" v-if="appointDetail.status == 1"><Icon type="ios-alert"
+                                                                               color="rgb(205, 94, 60)"/> <span
+              style="color: rgb(73, 80, 96);">未测量</span></span>
+            <span class="filed-content" v-if="appointDetail.status == 2"><Icon type="md-help-circle"
+                                                                               color="rgb(255, 153, 0)"/> <span
+              style="color: rgb(73, 80, 96);">待测量</span></span>
+            <span class="filed-content" v-if="appointDetail.status == 3"><Icon type="ios-pie"
+                                                                               color="rgb(45, 140, 240)"/> <span
+              style="color: rgb(73, 80, 96);">已测量</span></span>
+            <span class="filed-content" v-if="appointDetail.status == 4"><Icon type="ios-checkmark-circle"
+                                                                               color="rgb(25, 190, 107)"/> <span
+              style="color: rgb(73, 80, 96);">已完成</span></span>
           </li>
+        </ul>
+
+        <!--订单信息-->
+        <h2>客户信息</h2>
+        <ul class="field-list">
+          <li class="list-item">
+            <span class="filed-name">姓名：</span>
+            <span class="filed-content">{{appointDetail.contact_name}}</span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">联系方式：</span>
+            <span class="filed-content">{{appointDetail.contact_mobile}}</span>
+          </li>
+        </ul>
+
+        <!--房屋信息-->
+        <h2>房屋信息</h2>
+        <ul class="field-list">
+          <li class="list-item">
+            <span class="filed-name">小区名称：</span>
+            <span class="filed-content">{{appointDetail.house.name}}</span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">户型：</span>
+            <span class="filed-content" v-for="item in appointDetail.house.layout">
+              <span>{{item.text}}</span>
+            </span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">建筑信息：</span>
+            <span class="filed-content">{{appointDetail.house.name}}</span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">具体地址：</span>
+            <span class="filed-content">{{appointDetail.house.name}}</span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">邮政编码：</span>
+            <span class="filed-content">{{appointDetail.house.name}}</span>
+          </li>
+
         </ul>
       </Modal>
     </div>
@@ -63,7 +116,7 @@
   import {queryAppointList, queryAppointDetail} from "../../server/commonServices";
   import appointDetail from "components/model/appoint-detail.vue";
   import {ERR_OK} from "../../server/configServices";
-  import formatDate from "common/js/common";
+  import {formatDate} from "common/js/common";
 
   export default {
     name: "appointment",
@@ -122,7 +175,7 @@
             align: 'center',
             key: "time",
             render: (h, params) => {
-              return h('span', formatDate.formatDate(params.row.time, 'yyyy-MM-dd hh:mm'))
+              return h('span', formatDate(params.row.time, 'yyyy-MM-dd hh:mm'))
             }
           },
           {
@@ -144,7 +197,7 @@
               let color = null, type = 1, text = null;
               switch (params.row.status) {
                 case 1:
-                  type = 'ios-checkmark-circle';
+                  type = 'ios-alert';
                   color = 'rgb(205, 94, 60)';
                   text = '未测量'
                   break;
@@ -161,7 +214,7 @@
                 case 4:
                   type = 'ios-checkmark-circle'
                   color = 'rgb(25, 190, 107)'
-                  text = '已测量'
+                  text = '已完成'
                   break;
 
               }
@@ -223,11 +276,10 @@
           },
         ],
         appointList: [],
-        appointDetail: {},
+        appointDetail: null,
         modalVisible: false,
       };
     },
-    filters: {},
     mounted() {
       this.queryAppointList()
     },
@@ -242,6 +294,7 @@
       detailAction(item) {
         queryAppointDetail(item.row.id).then((res) => {
           if (res.code == ERR_OK) {
+            console.log(res.data)
             this.appointDetail = res.data;
             this.modalVisible = true;
           }
@@ -250,11 +303,18 @@
       deleteAction(item) {
         console.log(item)
       },
-      okAction(){},
-      cancelAction(){},
+      okAction() {
+      },
+      cancelAction() {
+      },
     },
     components: {
       appointDetail,
+    },
+    filters: {
+      formatDate(time) {
+        return formatDate(time, 'yyyy-MM-dd hh:mm');
+      }
     },
   };
 </script>

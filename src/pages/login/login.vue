@@ -52,8 +52,8 @@
       };
       return {
         loginForm: {
-          username: "",
-          password: ""
+          username: "etxin",
+          password: "123456"
         },
         loginRules: {
           username: [
