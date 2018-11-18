@@ -21,6 +21,8 @@ import Password from 'pages/password/password'
 import Avatar from 'pages/avatar/avatar'
 import store from '@/store';
 
+import {title} from "common/js/common";
+
 Vue.use(Router)
 
 const router = new Router({
@@ -143,8 +145,9 @@ router.beforeEach((to, from, next) => {
    * 1.判断该路由是否需要登录权限
    * 2.判断登录信息是否过期
    */
-  document.title = to.meta.title + ' - 后台管理平台';
-  var flag;
+  title(to.meta.title); //设置窗口页标题
+
+  let flag;
   try {
     var a = store.state.token.split(".")[1],
       h = new Date(1e3 * JSON.parse(Base64.decode(a)).exp);

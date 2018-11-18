@@ -5,28 +5,26 @@ export function getUrlParam(a) {
   return null != a ? unescape(a[2]) : null
 }
 
-//时间格式化
-export function formatDate(date, fmt) {
-  var date = new Date(date);
-  if (/(y+)/.test(fmt)) {
-    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
-  }
-  let o = {
-    'M+': date.getMonth() + 1,
-    'd+': date.getDate(),
-    'h+': date.getHours(),
-    'm+': date.getMinutes(),
-    's+': date.getSeconds()
-  };
-  for (let k in o) {
-    if (new RegExp(`(${k})`).test(fmt)) {
-      let str = o[k] + '';
-      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str));
-    }
-  }
-  return fmt;
+
+export function title(t) {
+  t = t ? t + " - XXX后台管理平台" : "XXX后台管理平台",
+    window.document.title = t
 }
 
-function padLeftZero(str) {
-  return ('00' + str).substr(str.length);
-};
+//时间格式化
+export function formatDate(t) {
+  if (!t)
+    return "";
+  let n = new Date(t).toJSON();
+  return new Date(+new Date(n) + 288e5).toISOString().replace(/T/g, " ").replace(/\.[\d]{3}Z/, "")
+}
+
+//金额格式化
+export function formatPrice(t, n) {
+  0 !== n && (n = n > 0 && n <= 20 ? n : 2),
+    t = parseFloat((t + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+  for (var e = t.split(".")[0].split("").reverse(), r = t.split(".")[1], o = "", i = 0; i < e.length; i++)
+    o += e[i] + ((i + 1) % 3 == 0 && i + 1 !== e.length ? "," : "");
+  return 0 === n ? o.split("").reverse().join("") : o.split("").reverse().join("") + "." + r
+}
+

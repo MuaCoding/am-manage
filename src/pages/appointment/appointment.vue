@@ -95,18 +95,68 @@
           </li>
           <li class="list-item">
             <span class="filed-name">建筑信息：</span>
-            <span class="filed-content">{{appointDetail.house.name}}</span>
+            <span class="filed-content">{{'面积 ' + appointDetail.house.size + ' ㎡ 、屋高 ' + appointDetail.house.height + ' m'}}</span>
           </li>
           <li class="list-item">
             <span class="filed-name">具体地址：</span>
-            <span class="filed-content">{{appointDetail.house.name}}</span>
+            <span class="filed-content">{{appointDetail.house.area + appointDetail.house.detail}}</span>
           </li>
           <li class="list-item">
             <span class="filed-name">邮政编码：</span>
-            <span class="filed-content">{{appointDetail.house.name}}</span>
+            <span class="filed-content">{{appointDetail.house.area_code}}</span>
           </li>
-
         </ul>
+
+        <!--测量员信息-->
+        <h2>测量员信息</h2>
+        <ul class="field-list">
+          <li class="list-item">
+            <span class="filed-name">姓名：</span>
+            <span class="filed-content">{{appointDetail.surveyor.name}}</span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">联系方式：</span>
+            <span class="filed-content">{{appointDetail.surveyor.mobile}}</span>
+          </li>
+        </ul>
+
+        <!--自行测量结果-->
+        <h2>自行测量结果</h2>
+        <ul class="field-list">
+          <li class="list-item">
+            <span class="filed-name">总材料费：</span>
+            <span class="filed-content">{{appointDetail.house.before_total.material | formatPrice}}</span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">总服务费：</span>
+            <span class="filed-content">{{appointDetail.house.before_total.service}}</span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">总计：</span>
+            <span class="filed-content">{{(appointDetail.house.before_total.material + appointDetail.house.before_total.service)}}</span>
+          </li>
+        </ul>
+
+        <!--自行测量结果-->
+        <h2>最终测量结果</h2>
+        <ul class="field-list" v-if="appointDetail.status == 4">
+          <li class="list-item">
+            <span class="filed-name">总材料费：</span>
+            <span class="filed-content">{{appointDetail.house.after_total.material}}</span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">总服务费：</span>
+            <span class="filed-content">{{appointDetail.house.after_total.service}}</span>
+          </li>
+          <li class="list-item">
+            <span class="filed-name">总计：</span>
+            <span class="filed-content">{{appointDetail.surveyor.mobile}}</span>
+          </li>
+        </ul>
+        <p class="empty-state" v-else-if="appointDetail.status !=4">
+          <Icon type="ios-alert" />
+          <span>暂无测量结果</span>
+        </p>
       </Modal>
     </div>
   </div>
@@ -116,7 +166,7 @@
   import {queryAppointList, queryAppointDetail} from "../../server/commonServices";
   import appointDetail from "components/model/appoint-detail.vue";
   import {ERR_OK} from "../../server/configServices";
-  import {formatDate} from "common/js/common";
+  import {formatDate, formatPrice} from "common/js/common";
 
   export default {
     name: "appointment",
@@ -175,7 +225,7 @@
             align: 'center',
             key: "time",
             render: (h, params) => {
-              return h('span', formatDate(params.row.time, 'yyyy-MM-dd hh:mm'))
+              return h('span', formatDate(params.row.time))
             }
           },
           {
@@ -282,6 +332,7 @@
     },
     mounted() {
       this.queryAppointList()
+      console.log(formatPrice)
     },
     methods: {
       queryAppointList() {
@@ -312,9 +363,9 @@
       appointDetail,
     },
     filters: {
-      formatDate(time) {
-        return formatDate(time, 'yyyy-MM-dd hh:mm');
-      }
+      // formatDate(time) {
+      //   return formatDate(time, 'yyyy-MM-dd hh:mm');
+      // }
     },
   };
 </script>
@@ -369,6 +420,15 @@
           color: #888;
         }
       }
+    }
+
+    .empty-state {
+      background-color: #f8f8f9;
+      color: #888;
+      text-align: center;
+      font-size: 14px;
+      padding: 20px 0;
+      margin-bottom: 15px;
     }
   }
 
