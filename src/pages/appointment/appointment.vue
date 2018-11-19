@@ -185,7 +185,7 @@
       return {
         page: 1, //当前页
         size: 10,  //当前页大小
-        typeList: [
+        typeList: [  //搜索类型
           {
             value: 'order',
             text: '订单编号'

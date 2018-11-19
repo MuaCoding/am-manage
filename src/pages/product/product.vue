@@ -15,10 +15,11 @@
           </Select>
         </div>
         <div>
-          <Select size="large" style="width:200px" v-if="searchType == 'status'" v-model="statusType">
-            <Option v-for="item in statusList" :value="item.value" :key="item.value" :label="item.text"></Option>
+          <Select size="large" style="width:200px" v-if="searchType == 'grade'" v-model="gradeType">
+            <Option v-for="item in gradeList" :value="item.value" :key="item.value" :label="item.text"></Option>
           </Select>
-          <Input size="large" style="width:200px" v-model="searchLabel" v-if="searchType != 'status'"/>
+          <!--<Input size="large" style="width:200px" :type="text" v-model="searchLabel"  v-if="searchType != 'id' && searchType != 'grade'"/>-->
+          <Input size="large" style="width:200px" number="true" type="number" v-model.number="searchLabel" :spellcheck="false" :min="1" v-if="searchType == 'id'"/>
         </div>
         <Button type="primary" size="large" @click="searchAction">
           <Icon type="ios-search"/>
@@ -53,6 +54,38 @@
         size: 10,
         formData: {},
         productList: [],
+        typeList: [ //搜索类型
+          {
+            value: 'id',
+            text: '编号'
+          },
+          {
+            value: 'name',
+            text: '名称'
+          },
+          {
+            value: 'material',
+            text: '材质'
+          },
+          {
+            value: 'grade',
+            text: '档次'
+          }
+        ],
+        searchType: 'id',  //初始化选中搜索类型
+        searchLabel: '',   //搜索内容
+        gradeType: '',    //搜索选中档次类型
+        gradeList: [{  //搜索档次类型列表
+          value: '1',
+          text: '经济'
+        }, {
+          value: '2',
+          text: '精选'
+        }, {
+          value: '3',
+          text: '豪华'
+        }],
+        flag: false,
       }
     },
     mounted() {
@@ -78,7 +111,7 @@
           }
         })
       },
-
+      searchAction(){},
     },
   }
 
