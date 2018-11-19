@@ -21,7 +21,7 @@ import Password from 'pages/password/password'
 import Avatar from 'pages/avatar/avatar'
 import store from '@/store';
 
-import {title} from "common/js/common";
+import {set_title} from "common/js/filters";
 
 Vue.use(Router)
 
@@ -145,7 +145,7 @@ router.beforeEach((to, from, next) => {
    * 1.判断该路由是否需要登录权限
    * 2.判断登录信息是否过期
    */
-  title(to.meta.title); //设置窗口页标题
+  set_title(to.meta.title); //设置窗口页标题
 
   let flag;
   try {

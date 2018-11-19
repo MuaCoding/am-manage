@@ -10,26 +10,31 @@
       </div>
       <div class="bar-right">
         <div>
-          <Select style="width:100px" size="large">
-            <Option value="1">客户姓名</Option>
-            <Option value="2">型号2</Option>
+          <Select style="width:100px" size="large" v-model="searchType">
+            <Option v-for="item in typeList" :value="item.value" :key="item.value" :label="item.text"></Option>
           </Select>
         </div>
         <div>
-          <Select filterable size="large" style="width:200px" :v-if="status">
-            <!-- <Option></Option> -->
+          <Select size="large" style="width:200px" v-if="searchType == 'status'" v-model="statusType">
+            <Option v-for="item in statusList" :value="item.value" :key="item.value" :label="item.text"></Option>
           </Select>
-          <Input size="large" placeholder="large size" style="width:200px"/>
+          <Input size="large" style="width:200px" v-model="searchLabel" v-if="searchType != 'status'"/>
         </div>
-        <Button type="primary" size="large">
+        <Button type="primary" size="large" @click="searchAction">
           <Icon type="ios-search"/>
+          <span v-if="flag">继续搜索</span>
+        </Button>
+        <Button size="large" v-if="flag" @click="resetAction">
+          <Icon type="md-refresh"/>
+          <span>重置搜索</span>
         </Button>
       </div>
     </div>
 
     <div>
-      <Table stripe border :columns="columnsList" :data="appointList" align="center"></Table>
-
+      <!--列表-->
+      <Table stripe border :columns="columnsList" :data="appointList.data" align="center"></Table>
+      <!--列表详情-->
       <Modal
         v-model="modalVisible"
         title="预约单详情"
@@ -125,15 +130,15 @@
         <ul class="field-list">
           <li class="list-item">
             <span class="filed-name">总材料费：</span>
-            <span class="filed-content">{{appointDetail.house.before_total.material | formatPrice}}</span>
+            <span class="filed-content">￥{{appointDetail.house.before_total.material | formatPrice(2)}}</span>
           </li>
           <li class="list-item">
             <span class="filed-name">总服务费：</span>
-            <span class="filed-content">{{appointDetail.house.before_total.service}}</span>
+            <span class="filed-content">￥{{appointDetail.house.before_total.service | formatPrice(2)}}</span>
           </li>
           <li class="list-item">
             <span class="filed-name">总计：</span>
-            <span class="filed-content">{{(appointDetail.house.before_total.material + appointDetail.house.before_total.service)}}</span>
+            <span class="filed-content">￥{{(appointDetail.house.before_total.material + appointDetail.house.before_total.service) | formatPrice(2)}}</span>
           </li>
         </ul>
 
@@ -154,25 +159,67 @@
           </li>
         </ul>
         <p class="empty-state" v-else-if="appointDetail.status !=4">
-          <Icon type="ios-alert" />
+          <Icon type="ios-alert"/>
           <span>暂无测量结果</span>
         </p>
       </Modal>
+    </div>
+
+    <!--分页-->
+    <div style="text-align: center; margin-top: 20px;" v-if="appointList">
+      <Page :total="appointList.count" :current="page" :page-size="size" placement="top" @on-change="handlePage"
+            @on-page-size-change="handleSize" show-sizer show-elevator/>
     </div>
   </div>
 
 </template>
 <script>
   import {queryAppointList, queryAppointDetail} from "../../server/commonServices";
-  import appointDetail from "components/model/appoint-detail.vue";
-  import {ERR_OK} from "../../server/configServices";
-  import {formatDate, formatPrice} from "common/js/common";
+  // import appointDetail from "components/model/appoint-detail.vue";
+  import {ERR_OK, ERR_Fail} from "../../server/configServices";
+  import {patternDate} from "common/js/filters";
 
   export default {
     name: "appointment",
     data() {
       return {
-        status: false,
+        page: 1, //当前页
+        size: 10,  //当前页大小
+        typeList: [
+          {
+            value: 'order',
+            text: '订单编号'
+          },
+          {
+            value: 'name',
+            text: '客户姓名'
+          },
+          {
+            value: 'mobile',
+            text: '客户手机'
+          },
+          {
+            value: 'surveyor',
+            text: '测量员'
+          },
+          {
+            value: 'status',
+            text: '状态'
+          },
+        ], //搜索项类型列表
+        searchType: 'order',  //初始化选中搜索类型
+        searchLabel: '',   //搜索内容
+        statusType: '',    //搜索选中状态类型
+        statusList: [{  //搜索状态类型列表
+          value: '0',
+          text: '分配中'
+        }, {
+          value: '1',
+          text: '进行中'
+        }, {
+          value: '2',
+          text: '已完成'
+        }],
         columnsList: [
           {
             title: "#",
@@ -225,7 +272,7 @@
             align: 'center',
             key: "time",
             render: (h, params) => {
-              return h('span', formatDate(params.row.time))
+              return h('span', patternDate(params.row.time))
             }
           },
           {
@@ -324,24 +371,67 @@
               ])
             }
           },
-        ],
-        appointList: [],
-        appointDetail: null,
-        modalVisible: false,
+        ],  //表格数据绑定
+        formData: {},       //请求参数变量
+        appointList: [],  //预约单列表
+        appointDetail: null,  //预约单详情
+        modalVisible: false,  //预约单详情模态框
+        flag: false,  //搜索状态
       };
     },
+    filters: {},
     mounted() {
-      this.queryAppointList()
-      console.log(formatPrice)
+      this.queryAppointList();
     },
     methods: {
+      //更改当前页
+      handlePage(value) {
+        this.page = value;
+        this.queryAppointList()
+      },
+      //更改当前页数量
+      handleSize(value) {
+        this.size = value;
+        this.queryAppointList()
+      },
+      //获取预约单列表
       queryAppointList() {
-        queryAppointList().then((res) => {
+        if (this.searchLabel && this.searchType != "status") {
+          switch (this.searchType) {
+            case 'order':
+              this.formData.order = this.searchLabel;
+              break;
+            case 'name':
+              this.formData.name = this.searchLabel;
+              break;
+            case 'mobile':
+              this.formData.mobile = this.searchLabel;
+              break;
+            case 'surveyor':
+              this.formData.surveyor = this.searchLabel;
+              break;
+            case 'status':
+              break;
+          }
+        } else if (this.statusType && this.searchType == "status") {
+          this.statusType ? this.formData.status = this.statusType : '';
+        } else {
+          this.formData = {
+            page: this.page,
+            size: this.size
+          }
+        };
+
+        queryAppointList(this.formData).then((res) => {
           if (res.code == ERR_OK) {
-            this.appointList = res.data.data;
+            this.appointList = res.data;
+            this.flag ? this.$Message.success(`搜索到${this.appointList.count}条结果`) : '';
+          } else if (res.code == ERR_Fail) {
+            this.appointList = [];
           }
         })
       },
+      //获取预约单详情
       detailAction(item) {
         queryAppointDetail(item.row.id).then((res) => {
           if (res.code == ERR_OK) {
@@ -352,21 +442,22 @@
         })
       },
       deleteAction(item) {
-        console.log(item)
       },
       okAction() {
       },
       cancelAction() {
       },
+      searchAction() {
+        this.flag = true;
+        !this.searchLabel && this.searchType != "status" ? this.$Message.error('请选择搜索条件') : this.queryAppointList();
+      },
+      resetAction: function () {
+        this.flag = false;
+        this.searchLabel = '';
+        this.statusType = '';
+      },
     },
-    components: {
-      appointDetail,
-    },
-    filters: {
-      // formatDate(time) {
-      //   return formatDate(time, 'yyyy-MM-dd hh:mm');
-      // }
-    },
+    components: {},
   };
 </script>
 

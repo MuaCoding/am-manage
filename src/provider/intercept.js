@@ -85,14 +85,16 @@ axios.interceptors.response.use(
         }
       })
     }, 20)
-    return Promise.reject(error)
+    return Promise.resolve(error.response)  //这里把错误信息扶正, 后面就不需要写 catch 了
   }
 )
 
 export default {
   get(url, params = {}) {
     return new Promise((resolve, reject) => {
-      axios.get(url, params).then(res => {
+      axios.get(url, {
+        params: params
+      }).then(res => {
         resolve(res.data)
       }).catch(error => {
         reject(error)

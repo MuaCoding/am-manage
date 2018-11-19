@@ -10,7 +10,7 @@ export function queryUserInfo() {
   return httpService.get('/api/manage/account')
 }
 
-// 获取预约估价
+// 获取预约估价列表
 export function queryAppointList(params) {
   return httpService.get('/api/manage/valuation', params)
 }
@@ -18,4 +18,12 @@ export function queryAppointList(params) {
 // 获取预约估价详情
 export function queryAppointDetail(params) {
   return httpService.get(`/api/manage/valuation/${params}/detail`)
+}
+
+
+
+
+// 获取产品项列表
+export function queryProductList(params) {
+  return httpService.get('/api/manage/product', params)
 }

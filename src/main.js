@@ -11,6 +11,13 @@ import 'iview/dist/styles/iview.css';
 
 import 'common/scss/index.scss'
 
+import * as filters from "common/js/filters"; //全局过滤器引用
+
+Object.keys(filters).forEach(key => {  // 过滤器定义
+  Vue.filter(key, filters[key])
+})
+
+
 Vue.use(iView, {
   transfer: true,
   size: 'large'

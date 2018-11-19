@@ -97,7 +97,8 @@
           </Layout>
         </Content>
       </Layout>
-      <Footer>Footer</Footer>
+
+      <footerBar></footerBar>
     </Layout>
   </div>
 </template>
@@ -107,7 +108,7 @@
   import {ERR_OK} from "../../server/configServices";
 
   import headerBar from 'components/header-bar.vue';
-
+  import footerBar from 'components/footer-bar.vue';
 
   export default {
     name: "app",
@@ -137,6 +138,7 @@
     },
     components: {
       headerBar,
+      footerBar,
     },
   };
 </script>
