@@ -455,6 +455,7 @@
         this.flag = false;
         this.searchLabel = '';
         this.statusType = '';
+        this.queryAppointList();
       },
     },
     components: {},
