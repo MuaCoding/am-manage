@@ -35,7 +35,7 @@
 
     <div>
       <!--列表-->
-      <Table stripe border :columns="columnsList" :data="productList.data" align="center"></Table>
+      <Table stripe border :loading="loading" :columns="columnsList" :data="productList.data" align="center"></Table>
 
     </div>
     <!--分页-->
@@ -59,6 +59,7 @@
       return {
         page: 1,
         size: 10,
+        loading: true,
         formData: {},
         productList: [],
         columnsList: [
@@ -277,6 +278,7 @@
           size: this.size
         }
         queryProductList(this.formData).then((res) => {
+          this.loading = false;
           if (res.code == ERR_OK) {
             this.productList = res.data;
           } else if (res.code == ERR_Fail) {

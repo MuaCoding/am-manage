@@ -33,7 +33,7 @@
 
     <div>
       <!--列表-->
-      <Table stripe border :columns="columnsList" :data="appointList.data" align="center"></Table>
+      <Table stripe border :loading="loading" :columns="columnsList" :data="appointList.data" align="center"></Table>
       <!--列表详情-->
       <Modal
         v-model="modalVisible"
@@ -185,6 +185,7 @@
       return {
         page: 1, //当前页
         size: 10,  //当前页大小
+        loading: true,
         typeList: [  //搜索类型
           {
             value: 'order',
@@ -419,9 +420,10 @@
             page: this.page,
             size: this.size
           }
-        };
+        }
 
         queryAppointList(this.formData).then((res) => {
+          this.loading = false;
           if (res.code == ERR_OK) {
             this.appointList = res.data;
             this.flag ? this.$Message.success(`搜索到${this.appointList.count}条结果`) : '';
@@ -475,6 +477,7 @@
       .bar-left {
         float: left;
       }
+
       .bar-right {
         float: right;
 
@@ -501,6 +504,7 @@
         border: 0
       }
     }
+
     .field-list {
       list-style: none;
       padding-bottom: 15px;
@@ -508,6 +512,7 @@
       > .list-item {
         font-size: 13px;
         line-height: 25px;
+
         > .filed-name {
           display: inline-block;
           width: 80px;
