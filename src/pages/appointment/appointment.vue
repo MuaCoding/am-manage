@@ -10,7 +10,7 @@
       </div>
       <div class="bar-right">
         <div>
-          <Select style="width:100px" size="large" v-model="searchType">
+          <Select style="width:100px" size="large" v-model="searchType" @on-change="emptyAction">
             <Option v-for="item in typeList" :value="item.value" :key="item.value" :label="item.text"></Option>
           </Select>
         </div>
@@ -289,7 +289,7 @@
           {
             title: "状态",
             align: 'center',
-            key: "address",
+            key: "state",
             render: (h, params) => {
               let color = null, type = 1, text = null;
               switch (params.row.status) {
@@ -313,7 +313,6 @@
                   color = 'rgb(25, 190, 107)'
                   text = '已完成'
                   break;
-
               }
               return h('p', [
                 h('Icon', {
@@ -329,7 +328,7 @@
           {
             title: "操作",
             align: 'center',
-            key: "address",
+            key: "operation",
             render: (h, params) => {
               return h('Dropdown', {
                 props: {
@@ -457,6 +456,9 @@
         this.statusType = '';
         this.queryAppointList();
       },
+      emptyAction: function () {
+        this.searchLabel = '';
+      }
     },
     components: {},
   };

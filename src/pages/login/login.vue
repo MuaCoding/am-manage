@@ -66,7 +66,6 @@
       };
     },
     mounted() {
-      // this.$store.commit(types.TITLE, "Login");
     },
     methods: {
       handleSubmit(name) {
@@ -88,12 +87,6 @@
                   });
                 }
               })
-              .catch(error => {
-                this.$Modal.error({
-                  title: "错误提示",
-                  content: "账号或密码错误"
-                });
-              });
           }
         });
       },
