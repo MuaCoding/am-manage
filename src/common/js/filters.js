@@ -1,3 +1,11 @@
+
+/*
+*
+*全局使用
+*
+*
+* */
+
 //获取URL参数
 // export function getUrlParam(a) {
 //   a = new RegExp("(^|\x26)" + a + "\x3d([^\x26]*)(\x26|$)");
@@ -27,6 +35,13 @@ let formatPrice = (t, n) => {
 
 
 export {title, formatDate, formatPrice}
+
+/*
+*
+* 独立使用
+*
+*
+* */
 
 export function set_title(t) {
   t = t ? t + " - XXX后台管理平台" : "XXX后台管理平台",

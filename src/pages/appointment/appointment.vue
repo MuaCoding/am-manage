@@ -436,7 +436,6 @@
       detailAction(item) {
         queryAppointDetail(item.row.id).then((res) => {
           if (res.code == ERR_OK) {
-            console.log(res.data)
             this.appointDetail = res.data;
             this.modalVisible = true;
           }
