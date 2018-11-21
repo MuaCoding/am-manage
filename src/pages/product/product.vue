@@ -287,6 +287,9 @@
         })
       },
       createAction() {
+        this.$router.push({
+          path: "/app/product/create"
+        });
       },
       searchAction() {
       },

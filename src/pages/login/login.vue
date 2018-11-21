@@ -41,7 +41,7 @@
         }
       };
       const validatePassword = (rule, value, callback) => {
-        var pattern = /^\S{3,20}$/g;
+        let pattern = /^\S{3,20}$/g;
         if (value === "") {
           callback(new Error("请填写密码"));
         } else if (!pattern.test(value)) {
@@ -71,7 +71,7 @@
       handleSubmit(name) {
         this.$refs[name].validate(valid => {
           if (valid) {
-            var formdata = {
+            let formdata = {
               account: this.loginForm.username,
               password: md5(this.loginForm.password),
               fingerprint: md5(new Fingerprint().get())
@@ -114,8 +114,10 @@
       line-height: 50px;
       text-align: center;
     }
+
     > form {
       padding-top: 15px;
+
       .btn-group {
         text-align: center;
       }

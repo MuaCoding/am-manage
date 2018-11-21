@@ -13,6 +13,8 @@ import Appointment from 'pages/appointment/appointment'
 import Room from 'pages/room/room'
 import Construct from 'pages/construct/construct'
 import Product from 'pages/product/product'
+import ProductEdit from 'pages/product-edit/product-edit'
+import ProductCreate from 'pages/product-create/product-create'
 import Company from 'pages/company/company'
 import Message from 'pages/message/message'
 import Banner from 'pages/banner/banner'
@@ -85,6 +87,22 @@ const router = new Router({
             title: '产品项列表'
           },
           component: Product,
+        },
+        {
+          path: "product/create",
+          name: "productCreate",
+          meta: {
+            title: "新增产品项"
+          },
+          component: ProductCreate,
+        },
+        {
+          path: 'product/edit/:id',
+          name: 'productEdit',
+          meta: {
+            title: '修改产品项'
+          },
+          component: ProductEdit,
         },
         {
           path: 'company',
