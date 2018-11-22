@@ -6,90 +6,12 @@
 
       <Layout style="padding: 0px 50px;">
 
-        <Breadcrumb style="margin: 16px 0px;">
-          <BreadcrumbItem>管理平台</BreadcrumbItem>
-          <BreadcrumbItem>{{$route.meta.title}}</BreadcrumbItem>
-        </Breadcrumb>
+        <bread-crumb></bread-crumb>
 
         <Content :style="{padding: '24px 0', minHeight: '280px', background: '#fff'}">
 
-          <Layout>
-
-            <Sider hide-trigger :style="{background: '#fff'}">
-
-              <Menu ref="menu" width="auto" :active-name="$route.name" @on-select="routeTo">
-
-                <MenuGroup title="管理平台">
-
-                  <MenuItem name="index">
-                    <Icon type="md-home"/>
-                    首页
-                  </MenuItem>
-
-                </MenuGroup>
-
-                <MenuGroup title="预约管理">
-
-                  <MenuItem name="appointment">
-                    <Icon type="ios-calendar-outline"/>
-                    预约估价
-                  </MenuItem>
-
-                </MenuGroup>
-
-                <MenuGroup title="装修管理">
-
-                  <MenuItem name="room">
-                    <Icon type="md-cube"/>
-                    房间项
-                  </MenuItem>
-
-                  <MenuItem name="construct">
-                    <Icon type="ios-construct"/>
-                    施工项
-                  </MenuItem>
-
-                  <MenuItem name="product">
-                    <Icon type="md-outlet"/>
-                    产品项
-                  </MenuItem>
-
-                </MenuGroup>
-
-                <MenuGroup title="员工管理">
-
-                  <MenuItem name="company">
-                    <Icon type="md-people"/>
-                    公司管理
-                  </MenuItem>
-
-                </MenuGroup>
-
-                <MenuGroup title="后台功能">
-
-                  <MenuItem name="message">
-                    <Icon type="md-chatboxes"/>
-                    平台消息
-                  </MenuItem>
-
-                  <MenuItem name="banner">
-                    <Icon type="ios-paper-plane"/>
-                    轮播管理
-                  </MenuItem>
-
-                  <MenuItem name="formula">
-                    <Icon type="ios-document"/>
-                    公式文档
-                  </MenuItem>
-
-                  <MenuItem name="password">
-                    <Icon type="ios-lock"/>
-                    密码修改
-                  </MenuItem>
-
-                </MenuGroup>
-              </Menu>
-            </Sider>
+          <Layout class="ivu-layout-has-sider">
+            <sider-menu></sider-menu>
 
             <Content :style="{padding: '5px 24px 80px', minHeight: '280px', background: '#fff'}">
               <router-view></router-view>
@@ -107,15 +29,18 @@
   import {queryUserInfo} from "../../server/commonServices";
   import {ERR_OK} from "../../server/configServices";
 
-  import headerBar from 'components/header-bar.vue';
-  import footerBar from 'components/footer-bar.vue';
+  import HeaderBar from 'components/common/header-bar.vue';
+  import FooterBar from 'components/common/footer-bar.vue';
+  import BreadCrumb from 'components/common/bread-crumb.vue';
+  import SiderMenu from 'components/common/sider-menu.vue';
 
   export default {
     name: "app",
     data() {
       return {
         activeName: "index",
-        userinfo: {}
+        userinfo: {},
+        breadcrumb: [],
       };
     },
     mounted() {
@@ -132,13 +57,29 @@
           }
         })
       },
-      routeTo(e) {
-        this.$router.push("/app/" + e);
+      activeMenu(){
+        this.$nextTick(function() {
+          this.activeName = this.$route.path.slice(5).split("/")[0]
+        }.bind(this))
+      },
+      routerPush(e) {
+        this.$router.push({
+          name: e
+        });
       },
     },
+    created: function () {
+      // this.updateMatches()
+      this.activeMenu()
+    },
+    watch: {
+      $route: ["activeMenu"],
+    },
     components: {
-      headerBar,
-      footerBar,
+      HeaderBar,
+      FooterBar,
+      BreadCrumb,
+      SiderMenu
     },
   };
 </script>

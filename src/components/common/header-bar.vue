@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import { queryUserInfo } from "../server/commonServices";
-import { ERR_OK } from "../server/configServices";
+import { queryUserInfo } from "../../server/commonServices";
+import { ERR_OK } from "../../server/configServices";
 
 export default {
     props: [
@@ -73,7 +73,7 @@ export default {
           border-radius: 15px;
           overflow: hidden;
           vertical-align: middle;
-          background: url('../assets/error.png') 50% no-repeat, #737d94;
+          background: url('../../assets/error.png') 50% no-repeat, #737d94;
           cursor: pointer;
 
           img {
