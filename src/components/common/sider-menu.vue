@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import {siderMenus} from "../../common/js/siderMenu";
+  import {siderMenus} from "../../common/js/sidermenu";
 
   export default {
     name: "SiderMenu",

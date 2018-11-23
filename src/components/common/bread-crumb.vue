@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import {breadCrumbs} from "../../common/js/breadCrumb";
+  import {breadCrumbs} from "../../common/js/breadcrumb";
 
   export default {
     name: "BreadCrumb",
