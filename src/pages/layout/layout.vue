@@ -22,6 +22,7 @@
 
       <footerBar></footerBar>
     </Layout>
+    <loading :loading="loading"></loading>
   </div>
 </template>
 
@@ -29,10 +30,11 @@
   import {queryUserInfo} from "../../server/commonServices";
   import {ERR_OK} from "../../server/configServices";
 
-  import HeaderBar from 'components/common/header-bar.vue';
-  import FooterBar from 'components/common/footer-bar.vue';
-  import BreadCrumb from 'components/common/bread-crumb.vue';
-  import SiderMenu from 'components/common/sider-menu.vue';
+  import HeaderBar from 'components/common/header-bar';
+  import FooterBar from 'components/common/footer-bar';
+  import BreadCrumb from 'components/common/bread-crumb';
+  import SiderMenu from 'components/common/sider-menu';
+  import Loading from 'components/common/loading';
 
   export default {
     name: "app",
@@ -41,6 +43,7 @@
         activeName: "index",
         userinfo: {},
         breadcrumb: [],
+        loading: null,
       };
     },
     mounted() {
@@ -68,18 +71,26 @@
         });
       },
     },
+    computed: {
+      loadingStatus(){
+        return this.$store.state.spinner.isLoading;
+      }
+    },
     created: function () {
-      // this.updateMatches()
       this.activeMenu()
     },
     watch: {
       $route: ["activeMenu"],
+      loadingStatus(e){
+        this.loading = e;
+      },
     },
     components: {
       HeaderBar,
       FooterBar,
       BreadCrumb,
-      SiderMenu
+      SiderMenu,
+      Loading
     },
   };
 </script>

@@ -30,6 +30,7 @@ axios.interceptors.response.use(
         content: response.msg
       });
     }
+    store.state.spinner.isLoading && store.commit("SET_LOADING", !1)
     return response
   },
   error => {
@@ -87,6 +88,7 @@ axios.interceptors.response.use(
         }
       })
     }, 20)
+    store.state.spinner.isLoading && store.commit("SET_LOADING", !1)
     return Promise.resolve(error.response)  //这里把错误信息扶正, 后面就不需要写 catch 了
   }
 )

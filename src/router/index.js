@@ -5,25 +5,26 @@ import iView from 'iview';
 import {
   Base64
 } from 'js-base64';
-
-import Layout from 'pages/layout/layout'
-import Index from 'pages/index/index'
-import Login from 'pages/login/login'
-import Appointment from 'pages/appointment/appointment'
-import Room from 'pages/room/room'
-import Construct from 'pages/construct/construct'
-import Product from 'pages/product/product'
-import ProductEdit from 'pages/product-edit/product-edit'
-import ProductCreate from 'pages/product-create/product-create'
-import Company from 'pages/company/company'
-import Message from 'pages/message/message'
-import Banner from 'pages/banner/banner'
-import Formula from 'pages/formula/formula'
-import Password from 'pages/password/password'
-import Avatar from 'pages/avatar/avatar'
 import store from '@/store';
-
 import {set_title} from "common/js/filters";
+
+const Layout = r => require.ensure([], () => r(require('pages/layout/layout')), 'layout')
+const Index = r => require.ensure([], () => r(require('pages/index/index')), 'index')
+const Login = r => require.ensure([], () => r(require('pages/login/login')), 'login')
+const Logout = r => require.ensure([], () => r(require('pages/logout/logout')), 'logout')
+const Appointment = r => require.ensure([], () => r(require('pages/appointment/appointment')), 'appointment')
+const Room = r => require.ensure([], () => r(require('pages/room/room')), 'room')
+const Construct = r => require.ensure([], () => r(require('pages/construct/construct')), 'construct')
+const Product = r => require.ensure([], () => r(require('pages/product/product')), 'product')
+const ProductEdit = r => require.ensure([], () => r(require('pages/product-edit/product-edit')), 'productEdit')
+const ProductCreate = r => require.ensure([], () => r(require('pages/product-create/product-create')), 'productCreate')
+const Company = r => require.ensure([], () => r(require('pages/company/company')), 'company')
+const Message = r => require.ensure([], () => r(require('pages/message/message')), 'message')
+const Banner = r => require.ensure([], () => r(require('pages/banner/banner')), 'banner')
+const Formula = r => require.ensure([], () => r(require('pages/formula/formula')), 'formula')
+const Password = r => require.ensure([], () => r(require('pages/password/password')), 'password')
+const Avatar = r => require.ensure([], () => r(require('pages/avatar/avatar')), 'avatar')
+
 
 Vue.use(Router)
 
@@ -40,6 +41,14 @@ const router = new Router({
         title: "用户登录"
       },
       component: Login,
+    },
+    {
+      path: '/logout',
+      name: "logout",
+      meta: {
+        title: "用户注销"
+      },
+      component: Logout,
     },
     {
       path: '/app',
